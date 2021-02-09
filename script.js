@@ -229,14 +229,14 @@ function valorRealtime(){
                 })
                 // USDC MERCADO BITCOIN COMPRA
                 
-                fetch(proxyurl + USDCMB).then( res => {
+                fetch(USDCMB).then( res => {
                     return res.json()
                 }).then( info => {
                     numeroRealtimeUSDCMB = [Number(info.ticker.buy).toFixed(2)]
                     tdUSDCMB.innerHTML =`<strong>${numeroRealtimeUSDCMB}`
                 }) 
                 // USDC MERCADO BITCOIN VENDA
-                fetch(proxyurl + USDCMB).then( res => {
+                fetch(USDCMB).then( res => {
                     return res.json()
                 }).then( info => {
                     numeroRealtimeUSDCMBV = [Number(info.ticker.sell).toFixed(2)]
@@ -859,5 +859,5 @@ function callStore(){
 }
 
         valorRealtime()
-        setInterval(callStore,5000)
-        setInterval(valorRealtime, 5999)   
+        setInterval(callStore,10000)
+        setInterval(valorRealtime, 10999)   
