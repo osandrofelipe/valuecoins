@@ -1,290 +1,246 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <title>VALUE COINS</title>
-
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/jumbotron/">
-  <link rel="stylesheet" href="styles.css">
-
-
-  <!-- Bootstrap core CSS -->
-  <!-- CSS only -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COINS</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-
-  <main>
-    <div class="container py-4 ">
-      <header class="pb-3 mb-3 border-bottom col-md-auto container-md row-cols-xxl-auto row-cols-sm-auto row-cols-md-auto col-md-auto bg">
-
-        <div class="row justify-content-center text-sm-center">
-          <div class="justify-content-center align-items-center justify-content-md-center col-xxl-9 col-xl-9 col-md-9 col-sm-9 justify-content-md-start justify-content-xl-start justify-content-sm-center align-items-sm-center d-flex" >
-            <img src="./BT_Image.png" alt="ValueCoins" width="70" height="70" style="margin-right: 3%;">
+    
+    <div id="main-container">
+        <div id="header">
+            <img src="./BT_Image.png" alt="ValueCoins">
             <h1>VALUE COINS</h1>
-          </div>
-          <div class=" px-md-3 text-center col-lg-3 col-xxl-3 col-xl-3  mt-sm-2 dropdown-item-text rounded-2 shadow bg-success text-light" >
-            <h3>DOLAR</h3>
-            <div class="p-md-2" id="valorUSD"></div>
-          </div>
-          <!-- <div id="valorUSD=">
-            <table id="tabela">
-              <thead class="thead-dark">
-                <th colspan="4">DOLAR</th>
-              </thead>
-              <td colspan="4" id="valorUSD"></td>
-            </table>
-          </div> -->
         </div>
+    
+    <div id="MB">
+       <table id="tabela">
+        <thead class="thead-darK">
+            <th colspan="5">MERCADO BITCOIN</th>
 
+        
+            <tr>
+              <th colspan="2" scope="col">MOEDA</th>
+              <th colspan="1" scope="col">COMPRA</th>
+              <th colspan="2" scope="col">VENDA</th>
 
-      </header>
+            </tr>
+          </thead>
+       
+           <tbody>
+               <tr>
+                   <td id= "nomeBTC">
+                       BTC
+                   </td>
+                    <td colspan="2" id= "valorBTC_C"></td>
+                    <td colspan="2" id= "valorBTC_V"></td>              
+               </tr>
+               <tr>
+                <td id= "nomeBTC">
+                    USD
+                </td>
+                <td colspan="2" id= "valorUSDBTCMB_C"></td>
+                <td colspan="2" id= "valorUSDBTCMB_V"></td>
+            </tr>
+               <tr>
+                <td id= "nomeETH">
+                    ETH
+                </td>
+                    <td colspan="2" id= "valorETH_C"></td>
+                    <td colspan="2" id= "valorETH_V"> </td>
+                <tr>
+                    <td id= "nomeETH">
+                        USD
+                    </td>
+                    <td colspan="2" id= "valorUSDETHMB_C"></td>
+                    <td colspan="2" id= "valorUSDETHMB_V"></td>
+                </tr>
+            </tr>
 
-      <!-- <div class="p-5 mb-4 bg-light rounded-3">
-        <div class="container-fluid py-5">
-          <h1 class="display-5 fw-bold">Custom jumbotron</h1>
-          <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in
-            previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your
-            liking.</p>
-          <button class="btn btn-primary btn-lg" type="button">Example button</button>
-        </div>
-      </div> -->
+            <tr>
+                <td id= "nomeBCH">
+                    BCH
+                </td>
+                    <td colspan="2" id= "valorBCH_C"></td>
+                    <td colspan="2" id= "valorBCH_V"></td>
+                </td>
+                </td>
+            </tr>
+            <tr>
+                <td id= "nomeBCH">
+                    USD
+                </td>
+                <td colspan="2" id= "valorUSDBCHMB_C"></td>
+                <td colspan="2" id= "valorUSDBCHMB_V"></td>
+            
+                </td>
+                </td>
+            </tr>
+            <tr>
+                <td id= "nomeLTC">
+                    LTC
+                </td>
+                <td colspan="2" id= "valorLTC_C"></td>
+                <td colspan="2" id= "valorLTC_V"></td>
+            
+                </td>
+                </td>
+            </tr>
+            <tr>
+                <td id= "nomeLTC">
+                    USD
+                </td>
+                <td colspan="2" id= "valorUSDLTCMB_C"></td>
+                <td colspan="2" id= "valorUSDLTCMB_V"></td>
+            
+                </td>
+                </td>
+            </tr>
 
-      <div class="row align-items-md-stretch">
-        <div class="col-md-6 mb-0">
-          <div class="h-100 p-4 text-white bg-dark rounded-3 text-center">
-            <strong><u>MERCADO BITCOIN</u></strong> <br><br>
-            <div id="MB">
-              <table id="tabela">
-                <thead class="thead-darK">
-                  <!-- <th colspan="5"></th> -->
+            <tr>
+                <td id= "nomeXRP">
+                    XRP
+                </td>
+                <td colspan="2" id= "valorXRP_C"></td>
+                <td colspan="2" id= "valorXRP_V"></td>
+            
+                </td>
+                </td>
+            </tr>
+            <tr>
+                <td id= "nomeXRP">
+                    USD
+                </td>
+                <td colspan="2" id= "valorUSDXRPMB_C"></td>
+                <td colspan="2" id= "valorUSDXRPMB_V"></td>
+            </tr>
 
-
-                  <tr>
-                    <th colspan="2" scope="col">MOEDA</th>
-                    <th colspan="1" scope="col">COMPRA</th>
-                    <th colspan="2" scope="col">VENDA</th>
-
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <td id="nomeBTC">
-                      BTC
-                    </td>
-                    <td colspan="2" id="valorBTC_C"></td>
-                    <td colspan="2" id="valorBTC_V"></td>
-                  </tr>
-                  <tr>
-                    <td id="nomeBTC">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDBTCMB_C"></td>
-                    <td colspan="2" id="valorUSDBTCMB_V"></td>
-                  </tr>
-                  <tr>
-                    <td id="nomeETH">
-                      ETH
-                    </td>
-                    <td colspan="2" id="valorETH_C"></td>
-                    <td colspan="2" id="valorETH_V"> </td>
-                  <tr>
-                    <td id="nomeETH">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDETHMB_C"></td>
-                    <td colspan="2" id="valorUSDETHMB_V"></td>
-                  </tr>
-                  </tr>
-
-                  <tr>
-                    <td id="nomeBCH">
-                      BCH
-                    </td>
-                    <td colspan="2" id="valorBCH_C"></td>
-                    <td colspan="2" id="valorBCH_V"></td>
-                    </td>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td id="nomeBCH">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDBCHMB_C"></td>
-                    <td colspan="2" id="valorUSDBCHMB_V"></td>
-
-                    </td>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td id="nomeLTC">
-                      LTC
-                    </td>
-                    <td colspan="2" id="valorLTC_C"></td>
-                    <td colspan="2" id="valorLTC_V"></td>
-
-                    </td>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td id="nomeLTC">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDLTCMB_C"></td>
-                    <td colspan="2" id="valorUSDLTCMB_V"></td>
-
-                    </td>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td id="nomeXRP">
-                      XRP
-                    </td>
-                    <td colspan="2" id="valorXRP_C"></td>
-                    <td colspan="2" id="valorXRP_V"></td>
-
-                    </td>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td id="nomeXRP">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDXRPMB_C"></td>
-                    <td colspan="2" id="valorUSDXRPMB_V"></td>
-                  </tr>
-
-                  <tr>
-                    <td id="nomeUSD">
-                      USDC
-                    </td>
-                    <td colspan="2" id="valorUSDCMB"></td>
-                    <td colspan="2" id="valorUSDCMBV"></td>
-                  </tr>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 pt-2 pt-md-0 pt-lg-0 pt-sm-2">
-          <div class="h-100 p-4 text-white bg-dark rounded-3 text-center">
-            <strong><u>BITCOIN TRADER</u></strong> <br><br>
-            <div id="BT">
-              <table id="tabela">
-                <thead class="thead-dark">
-                  <!-- <th colspan="5"></th> -->
-                  <tr>
-                    <th colspan="2" scope="col">MOEDA</th>
-                    <th colspan="1" scope="col">COMPRA</th>
-                    <th colspan="2" scope="col">VENDA</th>
-
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <td id="nomeBTC">
-                      BTC
-                    </td>
-                    <td colspan="2" id="valorBTCBT"> </td>
-                    <td colspan="2" id="valorBTCBT_V"> </td>
-                  </tr>
-                  <tr>
-                    <td id="nomeBTC">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDBTCBT_C"></td>
-                    <td colspan="2" id="valorUSDBTCBT_V"></td>
-                  </tr>
-                  <tr>
-                    <td id="nomeETH">
-                      ETH
-                    </td>
-                    <td colspan="2" id="valorETHBT"></td>
-                    <td colspan="2" id="valorETHBT_V"></td>
-                  </tr>
-                  <tr>
-                    <td id="nomeETH">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDETHBT_C"></td>
-                    <td colspan="2" id="valorUSDETHBT_V"></td>
-                  </tr>
-                  <tr>
-                    <td id="nomeBCH">
-                      BCH
-                    </td>
-                    <td colspan="2" id="valorBCHBT"></td>
-                    <td colspan="2" id="valorBCHBT_V"></td>
-                  </tr>
-                  <tr>
-                    <td id="nomeBCH">
-                      USD
-                    <td colspan="2" id="valorUSDBCHBT_C"></td>
-                    <td colspan="2" id="valorUSDBCHBT_V"></td>
-                  </tr>
-                  <tr>
-                    <td id="nomeLTC">
-                      LTC
-                    </td>
-                    <td colspan="2" id="valorLTCBT"></td>
-                    <td colspan="2" id="valorLTCBT_V"></td>
-                  </tr>
-
-                  <tr>
-                    <td id="nomeLTC">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDLTCBT_C"></td>
-                    <td colspan="2" id="valorUSDLTCBT_V"></td>
-                  </tr>
-
-                  <tr>
-                    <td id="nomeXRP">
-                      XRP
-                    </td>
-                    <td colspan="2" id="valorXRPBT"></td>
-                    <td colspan="2" id="valorXRPBT_V"></td>
-                  </tr>
-
-                  <tr>
-                    <td id="nomeXRP">
-                      USD
-                    </td>
-                    <td colspan="2" id="valorUSDXRPBT_C"></td>
-                    <td colspan="2" id="valorUSDXRPBT_V"></td>
-                  </tr>
-
-                  <tr>
-                    <td id="nomeUSD">
-                      DAI
-                    </td>
-                    <td colspan="2" id="valorDAIMB"></td>
-                    <td colspan="2" id="valorDAIMBV"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <footer class="pt-3 mt-4 text-muted border-top">
-        &copy; 2022
-      </footer>
+            <tr>
+                <td id= "nomeUSD">
+                    USDC
+                </td>
+                <td colspan="2" id= "valorUSDCMB"></td>
+                <td colspan="2" id= "valorUSDCMBV"></td>
+            </tr>
+                </td>
+           </tbody>
+       </table>
     </div>
-  </main>
 
-  <script src="script.js"></script>
+    <div id="BT">
+        <table id="tabela">
+         <thead class="thead-dark">
+             <th colspan="5">BITCOIN TRADER</th>
+             <tr>
+                <th colspan="2" scope="col">MOEDA</th>
+                <th colspan="1" scope="col">COMPRA</th>
+                <th colspan="2" scope="col">VENDA</th>
+ 
+             </tr>
+           </thead>
+        
+            <tbody>
+                <tr>
+                    <td id= "nomeBTC">
+                        BTC
+                    </td>
+                     <td colspan="2" id= "valorBTCBT">  </td> 
+                     <td colspan="2" id= "valorBTCBT_V"> </td>
+                </tr>
+                <tr>
+                    <td id= "nomeBTC">
+                        USD
+                    </td>
+                    <td colspan="2" id= "valorUSDBTCBT_C"></td>
+                    <td colspan="2" id= "valorUSDBTCBT_V"></td>
+                </tr>
+                <tr>
+                 <td id= "nomeETH">
+                     ETH
+                    </td>
+                     <td colspan="2" id= "valorETHBT"></td>
+                     <td colspan="2" id= "valorETHBT_V"></td>
+             </tr>
+             <tr>
+                <td id= "nomeETH">
+                    USD
+                </td>
+                <td colspan="2" id= "valorUSDETHBT_C"></td>
+                <td colspan="2" id= "valorUSDETHBT_V"></td>
+            </tr>
+             <tr>
+                 <td id= "nomeBCH">
+                     BCH
+                    </td>
+                     <td colspan="2" id= "valorBCHBT"></td>
+                     <td colspan="2" id= "valorBCHBT_V"></td>
+             </tr>
+             <tr>
+                <td id= "nomeBCH">
+                    USD
+                <td colspan="2" id= "valorUSDBCHBT_C"></td>
+                <td colspan="2" id= "valorUSDBCHBT_V"></td>
+            </tr>
+             <tr>
+                 <td id= "nomeLTC">
+                     LTC
+                    </td>
+                 <td colspan="2" id= "valorLTCBT"></td>
+                 <td colspan="2" id= "valorLTCBT_V"></td>
+             </tr>
 
+             <tr>
+                <td id= "nomeLTC">
+                    USD
+                </td>
+                <td colspan="2" id= "valorUSDLTCBT_C"></td>
+                <td colspan="2" id= "valorUSDLTCBT_V"></td>
+            </tr>
+
+            <tr>
+                <td id= "nomeXRP">
+                    XRP
+                </td>
+                <td colspan="2" id= "valorXRPBT"></td>
+                <td colspan="2" id= "valorXRPBT_V"></td>
+            </tr>
+
+            <tr>
+               <td id= "nomeXRP">
+                   USD
+                </td>
+               <td colspan="2" id= "valorUSDXRPBT_C"></td>
+               <td colspan="2" id= "valorUSDXRPBT_V"></td>
+           </tr>
+
+            <tr>
+                <td id= "nomeUSD">
+                    DAI
+                </td>
+                <td colspan="2" id= "valorDAIMB"></td>
+                <td colspan="2" id= "valorDAIMBV"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+     <div id="US">
+        <table id="tabela">
+            <thead class="thead-dark">
+                <th colspan="4">DOLAR</th>
+            </thead>
+        
+            <tbody>
+                <tr>
+                     <td colspan="2" id= "valorUSD"></td>            
+                </tr>
+            </tbody>
+        </table>
+     </div>
+     <footer>
+        <p>&copy; SFelipe</p>
+     </footer>
+    </div>
+     <script src="script.js"></script>
 </body>
-
 </html>

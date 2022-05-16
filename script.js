@@ -59,7 +59,7 @@ const tdBCHBTV = document.querySelector('td#valorBCHBT_V')
 const tdXRPBTV = document.querySelector('td#valorXRPBT_V')
 const tdDAIBT = document.querySelector('td#valorDAIMB')
 const tdDAIBTV = document.querySelector('td#valorDAIMBV')
-const tdUSD = document.querySelector('div#valorUSD')
+const tdUSD = document.querySelector('td#valorUSD')
 
 let numeroRealtimeUSD,
     numeroRealtimeDAIBT,
