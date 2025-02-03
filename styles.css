@@ -122,11 +122,6 @@ tr:hover {
     padding: 20px;
 }
 
-/* Adicione isso para melhorar a visualização das barras */
-.table-card canvas {
-    max-height: 500px; /* Altura máxima do gráfico */
-}
-
 footer {
     text-align: center;
     margin-top: 30px;
@@ -160,3 +155,89 @@ footer {
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }   
+
+/* =================================================== */
+/* RESPONSIVIDADE (NOVAS REGRAS ADICIONADAS ABAIXO) */
+/* =================================================== */
+
+@media (max-width: 1200px) {
+    #tables-container {
+        flex-wrap:wrap-reverse;
+        display: flex
+    }
+    
+    .table-card {
+        flex: 1 1 10%;
+        min-width: unset;
+        justify-items: center;
+    }
+}
+
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        display:contents;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #coin-filters {
+        justify-content: center;
+    }
+
+    .coin-filter {
+        flex: 0 1 calc(33% - 10px);
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    #header h1 {
+        font-size: 2rem;
+    }
+
+    #header p {
+        font-size: 1rem;
+    }
+
+    .table-card {
+        padding: 15px;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    #dolar-container h2 {
+        font-size: 1.3rem;
+    }
+
+    #valorUSD {
+        font-size: 1.5rem;
+    }
+
+    .coin-filter {
+        flex: 0 1 calc(50% - 10px);
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 540px) {
+    #header img {
+        width: 80px;
+    }
+
+    #header h1 {
+        font-size: 1.2rem;
+    }
+
+    .table-card h2 {
+        font-size: 1.1rem;
+    }
+
+    th, td {
+        padding: 4px;
+        font-size: 0.70em;
+    }
+}
