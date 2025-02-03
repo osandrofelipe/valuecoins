@@ -6,6 +6,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
+    -webkit-fontso-smoothing: antialiased;
     background-color: #f4f4f9;
     color: #333;
     line-height: 1.6;
@@ -244,22 +245,35 @@ footer {
 
 @media (max-width: 430px) {
     #header img {
-        width: 80px;
+        width: 50px;
     }
 
     #header h1 {
-        font-size: 1.2rem;
+        font-size: 1rem;
+        
     }
     .table-card {
         padding: 10px;
+        justify-content: center;
     }
 
     .table-card h2 {
-        font-size: 1.4rem;
+        font-size: 1rem;
     }
 
     th, td {
-        padding: 4px;
+        padding: 3px;
         font-size: 0.75em;
+    }
+
+    #coin-filters {
+        justify-content: center;
+    }
+
+    .coin-filter {
+        flex: 0 1 calc(13% - 10px);
+        font-size: 0.7rem;
+        text-align: center;
+        display: flex;
     }
 }
