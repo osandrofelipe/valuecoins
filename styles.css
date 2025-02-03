@@ -37,7 +37,7 @@ body {
 }
 
 #header p {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #7f8c8d;
 }
 
@@ -74,7 +74,8 @@ table {
     table-layout: auto;
 }
 
-th, td {
+th,
+td {
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid #ddd;
@@ -84,6 +85,8 @@ th, td {
 th {
     background-color: #34495e;
     color: #fff;
+    padding: 5px 10px;
+    text-align: center;
 }
 
 tr:hover {
@@ -94,6 +97,7 @@ tr:hover {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    justify-content: center;
     padding: 20px;
     margin-top: 20px;
     text-align: center;
@@ -105,22 +109,22 @@ tr:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 15px;
 }
 
 #valorUSD {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #27ae60;
 }
 
 .table-card canvas {
-    max-width: 120%;
-    margin-top: 20px;
+    max-width: 90%;
+    margin-top: 5px;
     border-radius: 8px;
     background: #fff;
-    padding: 20px;
+    padding: 5px;
 }
 
 footer {
@@ -155,31 +159,29 @@ footer {
 .coin-filter:hover {
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}   
+}
 
 /* =================================================== */
 /* RESPONSIVIDADE (NOVAS REGRAS ADICIONADAS ABAIXO) */
 /* =================================================== */
 
-@media (max-width: 1200px) {
-    #tables-container {
-        flex-wrap:wrap-reverse;
-        display: flex
-    }
-    
-    .table-card {
-        flex: 1 1 10%;
-        min-width: unset;
-        justify-items: center;
-    }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
     table {
         width: 100%;
-        display:contents;
+        display: contents;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+    }
+
+    #tables-container {
+        flex-wrap: wrap-reverse;
+        display: flex
+    }
+
+    .table-card {
+        flex: 1 1 100%;
+        min-width: unset;
+        justify-items: center;
     }
 
     #coin-filters {
@@ -187,8 +189,62 @@ footer {
     }
 
     .coin-filter {
-        flex: 0 1 calc(33% - 10px);
+        flex: 0 1 calc(13% - 10px);
+        font-size: 0.9rem;
         text-align: center;
+        display: flex;
+    }
+}
+
+@media (max-width: 1200px) {
+    table {
+        width: 100%;
+        display: contents;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #tables-container {
+        flex-wrap: wrap-reverse;
+        display: flex
+    }
+
+    .table-card {
+        flex: 1 1 100%;
+        min-width: unset;
+        justify-items: center;
+    }
+
+    #coin-filters {
+        justify-content: center;
+    }
+
+    .coin-filter {
+        flex: 0 1 calc(14% - 10px);
+        font-size: 0.9rem;
+        text-align: center;
+        display: flex;
+    }
+}
+
+@media (max-width: 780px) {
+    table {
+        width: 100%;
+        display: contents;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #coin-filters {
+        justify-content: center;
+        display: flex;
+    }
+
+    .coin-filter {
+        flex: 0 1 calc(14% - 10px);
+        font-size: 0.9rem;
+        text-align: center;
+        display: flex;
     }
 }
 
@@ -205,7 +261,8 @@ footer {
         padding: 15px;
     }
 
-    th, td {
+    th,
+    td {
         padding: 8px;
         font-size: 0.9em;
     }
@@ -218,9 +275,15 @@ footer {
         font-size: 1.5rem;
     }
 
+    #coin-filters {
+        justify-content: center;
+    }
+
     .coin-filter {
-        flex: 0 1 calc(50% - 10px);
-        padding: 6px 10px;
+        flex: 0 1 calc(14% - 10px);
+        font-size: 0.7rem;
+        text-align: center;
+        display: flex;
     }
 }
 
@@ -237,9 +300,23 @@ footer {
         font-size: 1.1rem;
     }
 
-    th, td {
+    th,
+    td {
         padding: 4px;
         font-size: 0.70em;
+    }
+
+    #coin-filters {
+        justify-content: center;
+        /* display: flex; */
+    }
+
+    .coin-filter {
+        flex: 0 1 calc(13% - 10px);
+        padding: 8px 10px;
+        font-size: 0.7rem;
+        text-align: center;
+        display: flex;
     }
 }
 
@@ -250,8 +327,9 @@ footer {
 
     #header h1 {
         font-size: 1rem;
-        
+
     }
+
     .table-card {
         padding: 10px;
         justify-content: center;
@@ -261,9 +339,18 @@ footer {
         font-size: 1rem;
     }
 
-    th, td {
-        padding: 3px;
-        font-size: 0.75em;
+    th,
+    td {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+
+    #dolar-container h2 {
+        font-size: 1rem;
+    }
+
+    #valorUSD {
+        font-size: 1rem;
     }
 
     #coin-filters {
@@ -271,7 +358,8 @@ footer {
     }
 
     .coin-filter {
-        flex: 0 1 calc(13% - 10px);
+        flex: 0 1 calc(2% - 10px);
+        padding: 7px 10px;
         font-size: 0.7rem;
         text-align: center;
         display: flex;
