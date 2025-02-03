@@ -1,402 +1,304 @@
-const proxyurl = "https://cors-anywhere.herokuapp.com/"; 
-
-// URLs das APIs
 const apiUrls = {
-    binance: {
-        BTC: 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT',
-        ETH: 'https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT',
-        LTC: 'https://api.binance.com/api/v3/ticker/price?symbol=LTCUSDT',
-        BCH: 'https://api.binance.com/api/v3/ticker/price?symbol=BCHUSDT',
-        XRP: 'https://api.binance.com/api/v3/ticker/price?symbol=XRPUSDT'
-    },
-    bitcoinTrade: {
-        BTC: 'https://api.bitcointrade.com.br/v3/public/BRLBTC/ticker',
-        ETH: 'https://api.bitcointrade.com.br/v3/public/BRLETH/ticker',
-        LTC: 'https://api.bitcointrade.com.br/v3/public/BRLLTC/ticker',
-        BCH: 'https://api.bitcointrade.com.br/v3/public/BRLBCH/ticker',
-        DAI: 'https://api.bitcointrade.com.br/v3/public/BRLDAI/ticker',
-        XRP: 'https://api.bitcointrade.com.br/v3/public/BRLXRP/ticker'
-    },
-    economia: {
-        USD_BRL: 'https://economia.awesomeapi.com.br/json/list/USD-BRL/1'
-    },
-    mercadoBitcoin: {
-        BTC: 'https://www.mercadobitcoin.net/api/BTC/ticker',
-        ETH: 'https://www.mercadobitcoin.net/api/ETH/ticker',
-        LTC: 'https://www.mercadobitcoin.net/api/LTC/ticker',
-        BCH: 'https://www.mercadobitcoin.net/api/BCH/ticker',
-        XRP: 'https://www.mercadobitcoin.net/api/XRP/ticker',
-        USDC: 'https://www.mercadobitcoin.com.br/api/USDC/ticker'
-    }
+  binance: {
+    BTC: "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT",
+    ETH: "https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT",
+    BCH: "https://api.binance.com/api/v3/ticker/price?symbol=BCHUSDT",
+    SOL: "https://api.binance.com/api/v3/ticker/price?symbol=SOLUSDT",
+    ADA: "https://api.binance.com/api/v3/ticker/price?symbol=ADAUSDT",
+    LTC: "https://api.binance.com/api/v3/ticker/price?symbol=LTCUSDT",
+    XRP: "https://api.binance.com/api/v3/ticker/price?symbol=XRPUSDT",
+  },
+  mercadoBitcoin: {
+    BTC: "https://www.mercadobitcoin.net/api/BTC/ticker",
+    ETH: "https://www.mercadobitcoin.net/api/ETH/ticker",
+    BCH: "https://www.mercadobitcoin.net/api/BCH/ticker",
+    SOL: "https://www.mercadobitcoin.net/api/SOL/ticker",
+    ADA: "https://www.mercadobitcoin.net/api/ADA/ticker",
+    LTC: "https://www.mercadobitcoin.net/api/LTC/ticker",
+    XRP: "https://www.mercadobitcoin.net/api/XRP/ticker",
+  },
+  economia: {
+    USD_BRL: "https://economia.awesomeapi.com.br/json/list/USD-BRL/1",
+  },
 };
 
-// Seleção de elementos DOM
-const elements = {
-    mercadoBitcoin: {
-        USDCCompra: document.querySelector('td#valorUSDCMB'),
-        USDCVenda: document.querySelector('td#valorUSDCMBV'),
-        BTCCompra: document.querySelector('td#valorBTC_C'),
-        ETHCompra: document.querySelector('td#valorETH_C'),
-        BCHCompra: document.querySelector('td#valorBCH_C'),
-        LTCCompra: document.querySelector('td#valorLTC_C'),
-        XRPCompra: document.querySelector('td#valorXRP_C'),
-        BTCVenda: document.querySelector('td#valorBTC_V'),
-        ETHVenda: document.querySelector('td#valorETH_V'),
-        BCHVenda: document.querySelector('td#valorBCH_V'),
-        LTCVenda: document.querySelector('td#valorLTC_V'),
-        XRPVenda: document.querySelector('td#valorXRP_V')
-    },
-    bitcoinTrade: {
-        BTCCompra: document.querySelector('td#valorBTCBT'),
-        ETHCompra: document.querySelector('td#valorETHBT'),
-        BCHCompra: document.querySelector('td#valorBCHBT'),
-        LTCCompra: document.querySelector('td#valorLTCBT'),
-        XRPCompra: document.querySelector('td#valorXRPBT'),
-        DAICompra: document.querySelector('td#valorDAIMB'),
-        DAIVenda: document.querySelector('td#valorDAIMBV'),
-        BTCVenda: document.querySelector('td#valorBTCBT_V'),
-        ETHVenda: document.querySelector('td#valorETHBT_V'),
-        BCHVenda: document.querySelector('td#valorBCHBT_V'),
-        LTCVenda: document.querySelector('td#valorLTCBT_V'),
-        XRPVenda: document.querySelector('td#valorXRPBT_V')
-    },
-    economia: {
-        USD: document.querySelector('div#valorUSD')
-    }
+// // Apenas BTC e ETH serão exibidos no gráfico
+// const chartCoins = ['BTC'];
+const allCoins = ["BTC", "ETH", "BCH", "SOL", "ADA", "LTC", "XRP"]; // Moedas para as tabelas
+
+// Configurações globais
+let selectedCoin = "BTC";
+let priceChart = null;
+const maxDataPoints = 15;
+const coinColors = {
+  BTC: "#FF6384",
+  ETH: "#36A2EB",
+  BCH: "#FFCE56",
+  SOL: "#FF8C00",
+  ADA: "#00FF00",
+  LTC: "#4BC0C0",
+  XRP: "#9966FF",
 };
 
-// Variáveis de valores
-let realTimeValues = {
-    USD: 0,
-    DAI: { compra: 0, venda: 0 },
-    USDC: { compra: 0, venda: 0 },
-    BTC: { compra: 0, venda: 0 },
-    ETH: { compra: 0, venda: 0 },
-    BCH: { compra: 0, venda: 0 },
-    LTC: { compra: 0, venda: 0 },
-    XRP: { compra: 0, venda: 0 }
+// Elementos DOM
+const coinFilters = document.querySelectorAll(".coin-filter");
+
+// Funções Gerais
+const fetchJson = async (url) => {
+  try {
+    const response = await fetch(url);
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+  }
 };
 
-let storedValues = {
-    mercadoBitcoin: {
-        BTC: { compra: 0, venda: 0 },
-        ETH: { compra: 0, venda: 0 },
-        BCH: { compra: 0, venda: 0 },
-        LTC: { compra: 0, venda: 0 },
-        XRP: { compra: 0, venda: 0 }
-    },
-    binance: {
-        BTC: 0,
-        ETH: 0,
-        BCH: 0,
-        LTC: 0
-    },
-    bitcoinTrade: {
-        BTC: { compra: 0, venda: 0 },
-        ETH: { compra: 0, venda: 0 },
-        BCH: { compra: 0, venda: 0 },
-        LTC: { compra: 0, venda: 0 }
+const formatNumber = (value) => parseFloat(value).toFixed(2);
+
+const calculoUSD = (valorBRL, valorUSD) => formatNumber(valorBRL / valorUSD);
+
+// Atualização das Tabelas
+const updateTable = (data, tableBodyId, usdValue, isBinance = false) => {
+  const tableBody = document.getElementById(tableBodyId);
+  tableBody.innerHTML = "";
+
+  allCoins.forEach((coin) => {
+    if (data[coin]) {
+      const compraBRL = isBinance
+        ? formatNumber(data[coin].price * usdValue)
+        : formatNumber(data[coin].compra);
+      const vendaBRL = isBinance
+        ? formatNumber(data[coin].price * usdValue)
+        : formatNumber(data[coin].venda);
+      const compraUSD = isBinance
+        ? formatNumber(data[coin].price)
+        : calculoUSD(data[coin].compra, usdValue);
+      const vendaUSD = isBinance
+        ? formatNumber(data[coin].price)
+        : calculoUSD(data[coin].venda, usdValue);
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+                <td>${coin}</td>
+                <td>${compraBRL}</td>
+                <td>${vendaBRL}</td>
+                <td>${compraUSD}</td>
+                <td>${vendaUSD}</td>
+            `;
+      tableBody.appendChild(row);
     }
+  });
 };
 
-function calculoBT(exchangeRate, binanceRate) {
-    return (exchangeRate / binanceRate).toFixed(2);
-}
+// Função para inicializar/atualizar o gráfico
+const initChart = (coin) => {
+  // Destrói o gráfico anterior se existir
+  if (priceChart) priceChart.destroy();
 
-function fetchJson(url) {
-    return fetch(url).then(res => res.json());
-}
+  const ctx = document.getElementById("priceChart").getContext("2d");
+  priceChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: ``,
+          data: [],
+          borderColor: coinColors[coin],
+          fill: false,
+          tension: 0.01,
+          borderWidth: 2.0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: `Variação - ${coin}`,
+        },
+      },
+      scales: {
+        x: { title: { display: false, text: "Horário" } },
+        y: {
+          title: {
+            display: true,
+            text: "BRL",
+            padding: 1,
+          },
+          beginAtZero: false,
+        },
+      },
+    },
+  });
+};
 
-function updateStoredValues() {
-    const fetchers = [
-        // Mercado Bitcoin Compra
-        fetchJson(apiUrls.mercadoBitcoin.BTC).then(info => storedValues.mercadoBitcoin.BTC.compra = Number(info.ticker.buy)),
-        fetchJson(apiUrls.mercadoBitcoin.ETH).then(info => storedValues.mercadoBitcoin.ETH.compra = Number(info.ticker.buy)),
-        fetchJson(apiUrls.mercadoBitcoin.BCH).then(info => storedValues.mercadoBitcoin.BCH.compra = Number(info.ticker.buy)),
-        fetchJson(apiUrls.mercadoBitcoin.LTC).then(info => storedValues.mercadoBitcoin.LTC.compra = Number(info.ticker.buy)),
-        fetchJson(apiUrls.mercadoBitcoin.XRP).then(info => storedValues.mercadoBitcoin.XRP.compra = Number(info.ticker.buy)),
+// Função para atualizar o gráfico
+const updateChart = (price) => {
+  const formattedTime = new Date().toLocaleTimeString();
 
-        // Mercado Bitcoin Venda
-        fetchJson(apiUrls.mercadoBitcoin.BTC).then(info => storedValues.mercadoBitcoin.BTC.venda = Number(info.ticker.sell)),
-        fetchJson(apiUrls.mercadoBitcoin.ETH).then(info => storedValues.mercadoBitcoin.ETH.venda = Number(info.ticker.sell)),
-        fetchJson(apiUrls.mercadoBitcoin.BCH).then(info => storedValues.mercadoBitcoin.BCH.venda = Number(info.ticker.sell)),
-        fetchJson(apiUrls.mercadoBitcoin.LTC).then(info => storedValues.mercadoBitcoin.LTC.venda = Number(info.ticker.sell)),
-        fetchJson(apiUrls.mercadoBitcoin.XRP).then(info => storedValues.mercadoBitcoin.XRP.venda = Number(info.ticker.sell)),
+  // Adiciona novo ponto
+  priceChart.data.labels.push(formattedTime);
+  priceChart.data.datasets[0].data.push(price);
 
-        // Binance
-        fetchJson(apiUrls.binance.BTC).then(info => storedValues.binance.BTC = Number(info.price)),
-        fetchJson(apiUrls.binance.ETH).then(info => storedValues.binance.ETH = Number(info.price)),
-        fetchJson(apiUrls.binance.BCH).then(info => storedValues.binance.BCH = Number(info.price)),
-        fetchJson(apiUrls.binance.LTC).then(info => storedValues.binance.LTC = Number(info.price)),
+  // Mantém máximo de 15 pontos
+  if (priceChart.data.labels.length > 15) {
+    priceChart.data.labels.shift();
+    priceChart.data.datasets[0].data.shift();
+  }
 
-        // Bitcoin Trade Compra
-        fetchJson(apiUrls.bitcoinTrade.BTC).then(info => storedValues.bitcoinTrade.BTC.compra = Number(info.data.buy)),
-        fetchJson(apiUrls.bitcoinTrade.ETH).then(info => storedValues.bitcoinTrade.ETH.compra = Number(info.data.buy)),
-        fetchJson(apiUrls.bitcoinTrade.BCH).then(info => storedValues.bitcoinTrade.BCH.compra = Number(info.data.buy)),
-        fetchJson(apiUrls.bitcoinTrade.LTC).then(info => storedValues.bitcoinTrade.LTC.compra = Number(info.data.buy))
-    ];
+  priceChart.update();
+};
+// Dados históricos
+const fetchHistoricalData = async (coin) => {
+  try {
+    const response = await fetch(
+      `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=brl&days=1&interval=hourly`
+    );
+    const data = await response.json();
+    return data.prices.map(([timestamp, price]) => ({
+      x: new Date(timestamp).toLocaleTimeString(),
+      y: price,
+    }));
+  } catch (error) {
+    console.error("Erro ao buscar histórico:", error);
+    return [];
+  }
+};
 
-    Promise.all(fetchers).catch(console.error);
-}
+const loadHistoricalData = async () => {
+  const historicalData = await fetchHistoricalData(selectedCoin.toLowerCase());
+  if (historicalData.length > 0) {
+    priceChart.data.datasets[0].data = historicalData.map((p) => p.y);
+    priceChart.data.labels = historicalData.map((p) => p.x);
+    priceChart.update();
+  }
+};
 
-function updateRealTimeValues() {
-    const fetchers = [
-        // Economia USD
-        fetchJson(apiUrls.economia.USD_BRL).then(info => {
-            realTimeValues.USD = Number(info[0].bid).toFixed(2);
-            elements.economia.USD.innerHTML = `<h1><strong>R$ ${realTimeValues.USD}`;
-        }),
-
-        // USDC Mercado Bitcoin
-        fetchJson(apiUrls.mercadoBitcoin.USDC).then(info => {
-            realTimeValues.USDC.compra = Number(info.ticker.buy).toFixed(2);
-            realTimeValues.USDC.venda = Number(info.ticker.sell).toFixed(2);
-            elements.mercadoBitcoin.USDCCompra.innerHTML = `<strong>${realTimeValues.USDC.compra}`;
-            elements.mercadoBitcoin.USDCVenda.innerHTML = `<strong>${realTimeValues.USDC.venda}`;
-        }),
-
-        // DAI Bitcoin Trade
-        fetchJson(apiUrls.bitcoinTrade.DAI).then(info => {
-            realTimeValues.DAI.compra = Number(info.data.buy).toFixed(2);
-            realTimeValues.DAI.venda = Number(info.data.sell).toFixed(2);
-            elements.bitcoinTrade.DAICompra.innerHTML = `<strong>${realTimeValues.DAI.compra}`;
-            elements.bitcoinTrade.DAIVenda.innerHTML = `<strong>${realTimeValues.DAI.venda}`;
-        }),
-
-        // Mercado Bitcoin Compra
-        fetchJson(apiUrls.mercadoBitcoin.BTC).then(info => {
-            realTimeValues.BTC.compra = Number(info.ticker.buy).toFixed(2);
-            elements.mercadoBitcoin.BTCCompra.innerHTML = `<strong>${realTimeValues.BTC.compra}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.ETH).then(info => {
-            realTimeValues.ETH.compra = Number(info.ticker.buy).toFixed(2);
-            elements.mercadoBitcoin.ETHCompra.innerHTML = `<strong>${realTimeValues.ETH.compra}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.BCH).then(info => {
-            realTimeValues.BCH.compra = Number(info.ticker.buy).toFixed(2);
-            elements.mercadoBitcoin.BCHCompra.innerHTML = `<strong>${realTimeValues.BCH.compra}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.LTC).then(info => {
-            realTimeValues.LTC.compra = Number(info.ticker.buy).toFixed(2);
-            elements.mercadoBitcoin.LTCCompra.innerHTML = `<strong>${realTimeValues.LTC.compra}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.XRP).then(info => {
-            realTimeValues.XRP.compra = Number(info.ticker.buy).toFixed(2);
-            elements.mercadoBitcoin.XRPCompra.innerHTML = `<strong>${realTimeValues.XRP.compra}`;
-        }),
-
-        // Mercado Bitcoin Venda
-        fetchJson(apiUrls.mercadoBitcoin.BTC).then(info => {
-            realTimeValues.BTC.venda = Number(info.ticker.sell).toFixed(2);
-            elements.mercadoBitcoin.BTCVenda.innerHTML = `<strong>${realTimeValues.BTC.venda}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.ETH).then(info => {
-            realTimeValues.ETH.venda = Number(info.ticker.sell).toFixed(2);
-            elements.mercadoBitcoin.ETHVenda.innerHTML = `<strong>${realTimeValues.ETH.venda}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.BCH).then(info => {
-            realTimeValues.BCH.venda = Number(info.ticker.sell).toFixed(2);
-            elements.mercadoBitcoin.BCHVenda.innerHTML = `<strong>${realTimeValues.BCH.venda}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.LTC).then(info => {
-            realTimeValues.LTC.venda = Number(info.ticker.sell).toFixed(2);
-            elements.mercadoBitcoin.LTCVenda.innerHTML = `<strong>${realTimeValues.LTC.venda}`;
-        }),
-        fetchJson(apiUrls.mercadoBitcoin.XRP).then(info => {
-            realTimeValues.XRP.venda = Number(info.ticker.sell).toFixed(2);
-            elements.mercadoBitcoin.XRPVenda.innerHTML = `<strong>${realTimeValues.XRP.venda}`;
-        }),
-
-        // Binance Real Time
-        fetchJson(apiUrls.binance.BTC).then(info => {
-            realTimeValues.BTC.binance = Number(info.price).toFixed(2);
-        }),
-        fetchJson(apiUrls.binance.ETH).then(info => {
-            realTimeValues.ETH.binance = Number(info.price).toFixed(2);
-        }),
-        fetchJson(apiUrls.binance.LTC).then(info => {
-            realTimeValues.LTC.binance = Number(info.price).toFixed(2);
-        }),
-        fetchJson(apiUrls.binance.BCH).then(info => {
-            realTimeValues.BCH.binance = Number(info.price).toFixed(2);
-        }),
-        fetchJson(apiUrls.binance.XRP).then(info => {
-            realTimeValues.XRP.binance = Number(info.price).toFixed(2);
-        }),
-
-        // Bitcoin Trade Compra
-        fetchJson(apiUrls.bitcoinTrade.BTC).then(info => {
-            realTimeValues.BTC.compraTrade = Number(info.data.buy).toFixed(2);
-            elements.bitcoinTrade.BTCCompra.innerHTML = `<strong>${realTimeValues.BTC.compraTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.ETH).then(info => {
-            realTimeValues.ETH.compraTrade = Number(info.data.buy).toFixed(2);
-            elements.bitcoinTrade.ETHCompra.innerHTML = `<strong>${realTimeValues.ETH.compraTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.BCH).then(info => {
-            realTimeValues.BCH.compraTrade = Number(info.data.buy).toFixed(2);
-            elements.bitcoinTrade.BCHCompra.innerHTML = `<strong>${realTimeValues.BCH.compraTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.LTC).then(info => {
-            realTimeValues.LTC.compraTrade = Number(info.data.buy).toFixed(2);
-            elements.bitcoinTrade.LTCCompra.innerHTML = `<strong>${realTimeValues.LTC.compraTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.XRP).then(info => {
-            realTimeValues.XRP.compraTrade = Number(info.data.buy).toFixed(2);
-            elements.bitcoinTrade.XRPCompra.innerHTML = `<strong>${realTimeValues.XRP.compraTrade}`;
-        }),
-
-        // Bitcoin Trade Venda
-        fetchJson(apiUrls.bitcoinTrade.BTC).then(info => {
-            realTimeValues.BTC.vendaTrade = Number(info.data.sell).toFixed(2);
-            elements.bitcoinTrade.BTCVenda.innerHTML = `<strong>${realTimeValues.BTC.vendaTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.ETH).then(info => {
-            realTimeValues.ETH.vendaTrade = Number(info.data.sell).toFixed(2);
-            elements.bitcoinTrade.ETHVenda.innerHTML = `<strong>${realTimeValues.ETH.vendaTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.BCH).then(info => {
-            realTimeValues.BCH.vendaTrade = Number(info.data.sell).toFixed(2);
-            elements.bitcoinTrade.BCHVenda.innerHTML = `<strong>${realTimeValues.BCH.vendaTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.LTC).then(info => {
-            realTimeValues.LTC.vendaTrade = Number(info.data.sell).toFixed(2);
-            elements.bitcoinTrade.LTCVenda.innerHTML = `<strong>${realTimeValues.LTC.vendaTrade}`;
-        }),
-        fetchJson(apiUrls.bitcoinTrade.XRP).then(info => {
-            realTimeValues.XRP.vendaTrade = Number(info.data.sell).toFixed(2);
-            elements.bitcoinTrade.XRPVenda.innerHTML = `<strong>${realTimeValues.XRP.vendaTrade}`;
-        })
-    ];
-
-    Promise.all(fetchers)
-        .then(() => {
-            // Cálculo USD Compra e Venda para Mercado Bitcoin
-            const valorUSDBTCMB_C = document.querySelector("td#valorUSDBTCMB_C");
-            const valorUSDETHMB_C = document.querySelector("td#valorUSDETHMB_C");
-            const valorUSDBCHMB_C = document.querySelector("td#valorUSDBCHMB_C");
-            const valorUSDLTCMB_C = document.querySelector("td#valorUSDLTCMB_C");
-            const valorUSDXRPMB_C = document.querySelector("td#valorUSDXRPMB_C");
-
-            const valorUSDBTCMB_V = document.querySelector("td#valorUSDBTCMB_V");
-            const valorUSDETHMB_V = document.querySelector("td#valorUSDETHMB_V");
-            const valorUSDBCHMB_V = document.querySelector("td#valorUSDBCHMB_V");
-            const valorUSDLTCMB_V = document.querySelector("td#valorUSDLTCMB_V");
-            const valorUSDXRPMB_V = document.querySelector("td#valorUSDXRPMB_V");
-
-            // Compra
-            valorUSDBTCMB_C.innerHTML = `<strong>${calculoBT(realTimeValues.BTC.compra, realTimeValues.BTC.binance)}`;
-            valorUSDETHMB_C.innerHTML = `<strong>${calculoBT(realTimeValues.ETH.compra, realTimeValues.ETH.binance)}`;
-            valorUSDBCHMB_C.innerHTML = `<strong>${calculoBT(realTimeValues.BCH.compra, realTimeValues.BCH.binance)}`;
-            valorUSDLTCMB_C.innerHTML = `<strong>${calculoBT(realTimeValues.LTC.compra, realTimeValues.LTC.binance)}`;
-            valorUSDXRPMB_C.innerHTML = `<strong>${calculoBT(realTimeValues.XRP.compra, realTimeValues.XRP.binance)}`;
-
-            // Venda
-            valorUSDBTCMB_V.innerHTML = `<strong>${calculoBT(realTimeValues.BTC.venda, realTimeValues.BTC.binance)}`;
-            valorUSDETHMB_V.innerHTML = `<strong>${calculoBT(realTimeValues.ETH.venda, realTimeValues.ETH.binance)}`;
-            valorUSDBCHMB_V.innerHTML = `<strong>${calculoBT(realTimeValues.BCH.venda, realTimeValues.BCH.binance)}`;
-            valorUSDLTCMB_V.innerHTML = `<strong>${calculoBT(realTimeValues.LTC.venda, realTimeValues.LTC.binance)}`;
-            valorUSDXRPMB_V.innerHTML = `<strong>${calculoBT(realTimeValues.XRP.venda, realTimeValues.XRP.binance)}`;
-
-            // Cálculo USD Compra e Venda para Bitcoin Trade
-            const valorUSDBTCBT_C = document.querySelector("td#valorUSDBTCBT_C");
-            const valorUSDETHBT_C = document.querySelector("td#valorUSDETHBT_C");
-            const valorUSDBCHBT_C = document.querySelector("td#valorUSDBCHBT_C");
-            const valorUSDLTCBT_C = document.querySelector("td#valorUSDLTCBT_C");
-            const valorUSDXRPBT_C = document.querySelector("td#valorUSDXRPBT_C");
-
-            const valorUSDBTCBT_V = document.querySelector("td#valorUSDBTCBT_V");
-            const valorUSDETHBT_V = document.querySelector("td#valorUSDETHBT_V");
-            const valorUSDBCHBT_V = document.querySelector("td#valorUSDBCHBT_V");
-            const valorUSDLTCBT_V = document.querySelector("td#valorUSDLTCBT_V");
-            const valorUSDXRPBT_V = document.querySelector("td#valorUSDXRPBT_V");
-
-            // Compra
-            valorUSDBTCBT_C.innerHTML = `<strong>${calculoBT(realTimeValues.BTC.compraTrade, realTimeValues.BTC.binance)}`;
-            valorUSDETHBT_C.innerHTML = `<strong>${calculoBT(realTimeValues.ETH.compraTrade, realTimeValues.ETH.binance)}`;
-            valorUSDBCHBT_C.innerHTML = `<strong>${calculoBT(realTimeValues.BCH.compraTrade, realTimeValues.BCH.binance)}`;
-            valorUSDLTCBT_C.innerHTML = `<strong>${calculoBT(realTimeValues.LTC.compraTrade, realTimeValues.LTC.binance)}`;
-            valorUSDXRPBT_C.innerHTML = `<strong>${calculoBT(realTimeValues.XRP.compraTrade, realTimeValues.XRP.binance)}`;
-
-            // Venda
-            valorUSDBTCBT_V.innerHTML = `<strong>${calculoBT(realTimeValues.BTC.vendaTrade, realTimeValues.BTC.binance)}`;
-            valorUSDETHBT_V.innerHTML = `<strong>${calculoBT(realTimeValues.ETH.vendaTrade, realTimeValues.ETH.binance)}`;
-            valorUSDBCHBT_V.innerHTML = `<strong>${calculoBT(realTimeValues.BCH.vendaTrade, realTimeValues.BCH.binance)}`;
-            valorUSDLTCBT_V.innerHTML = `<strong>${calculoBT(realTimeValues.LTC.vendaTrade, realTimeValues.LTC.binance)}`;
-            valorUSDXRPBT_V.innerHTML = `<strong>${calculoBT(realTimeValues.XRP.vendaTrade, realTimeValues.XRP.binance)}`;
-
-            applyConditions();
-        })
-        .catch(console.error);
-}
-
-function applyConditions() {
-    const conditionList = [
-        { compra: "valorUSDBTCMB_C", tradeCompra: "valorUSDBTCBT_C", venda: "valorUSDBTCMB_V", tradeVenda: "valorUSDBTCBT_V" },
-        { compra: "valorUSDETHMB_C", tradeCompra: "valorUSDETHBT_C", venda: "valorUSDETHMB_V", tradeVenda: "valorUSDETHBT_V" },
-        { compra: "valorUSDBCHMB_C", tradeCompra: "valorUSDBCHBT_C", venda: "valorUSDBCHMB_V", tradeVenda: "valorUSDBCHBT_V" },
-        { compra: "valorUSDLTCMB_C", tradeCompra: "valorUSDLTCBT_C", venda: "valorUSDLTCMB_V", tradeVenda: "valorUSDLTCBT_V" },
-        { compra: "valorUSDXRPMB_C", tradeCompra: "valorUSDXRPBT_C", venda: "valorUSDXRPMB_V", tradeVenda: "valorUSDXRPBT_V" }
-    ];
-
-    conditionList.forEach(({ compra, tradeCompra, venda, tradeVenda }) => {
-        applyCondition(
-            document.querySelector(`td#${compra}`),
-            document.querySelector(`td#${tradeCompra}`),
-            document.querySelector(`td#${venda}`),
-            document.querySelector(`td#${tradeVenda}`)
-        );
-    });
-}
-
-function applyCondition(compraElement, tradeCompraElement, vendaElement, tradeVendaElement) {
-    const compraValue = parseFloat(compraElement.textContent);
-    const tradeCompraValue = parseFloat(tradeCompraElement.textContent);
-    const vendaValue = parseFloat(vendaElement.textContent);
-    const tradeVendaValue = parseFloat(tradeVendaElement.textContent);
-
-    // Compra
-    if (compraValue < tradeCompraValue) {
-        mudaVerd(compraElement);
-        mudaVerm(tradeCompraElement);
-    } else if (compraValue > tradeCompraValue) {
-        mudaVerm(compraElement);
-        mudaVerd(tradeCompraElement);
-    } else {
-        mudaAmar(compraElement);
-        mudaAmar(tradeCompraElement);
+const fetchWithRetry = async (url, retries = 3, delay = 1000) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) return await response.json();
+    } catch (error) {
+      if (i === retries - 1) throw error;
+      await new Promise((resolve) => setTimeout(resolve, delay * (i + 1)));
     }
+  }
+};
 
-    // Venda
-    if (vendaValue > tradeVendaValue) {
-        mudaVerd(vendaElement);
-        mudaVerm(tradeVendaElement);
-    } else if (vendaValue < tradeVendaValue) {
-        mudaVerm(vendaElement);
-        mudaVerd(tradeVendaElement);
-    } else {
-        mudaAmar(vendaElement);
-        mudaAmar(tradeVendaElement);
+const populateChartWithHistoricalData = async () => {
+  for (const coin of chartCoins) {
+    const historicalData = await fetchHistoricalData(coin.toLowerCase());
+    if (historicalData.length > 0) {
+      priceChart.data.datasets.push({
+        label: coin,
+        data: historicalData.slice(-maxDataPoints),
+        borderColor: coinColors[coin],
+        fill: false,
+      });
+      priceChart.data.labels = historicalData
+        .slice(-maxDataPoints)
+        .map((point) => point.x);
     }
-}
+  }
+  priceChart.update();
+};
 
-function mudaVerm(td) {
-    td.style.backgroundColor = '#ff0000';
-}
+// Atualização de Dados
+const updateUSD = async () => {
+  const usdData = await fetchJson(apiUrls.economia.USD_BRL);
+  if (usdData && usdData[0]) {
+    const usdValue = Number(usdData[0].bid);
+    document.getElementById("valorUSD").innerHTML = `R$ ${usdValue.toFixed(2)}`;
+    return usdValue;
+  }
+  return 0;
+};
 
-function mudaVerd(td) {
-    td.style.backgroundColor = '#00ca10';
-}
+const updateTables = async (usdValue) => {
+  // Mercado Bitcoin
+  const mbData = {};
+  for (const coin of allCoins) {
+    const data = await fetchJson(apiUrls.mercadoBitcoin[coin]);
+    if (data?.ticker) {
+      mbData[coin] = {
+        compra: formatNumber(data.ticker.buy),
+        venda: formatNumber(data.ticker.sell),
+      };
+    }
+  }
+  renderTable(mbData, "mb-body", usdValue);
 
-function mudaAmar(td) {
-    td.style.backgroundColor = '#ffbb00';
-}
+  // Binance
+  const binanceData = {};
+  for (const coin of allCoins) {
+    const data = await fetchJson(apiUrls.binance[coin]);
+    if (data?.price) {
+      const priceBRL = formatNumber(data.price * usdValue);
+      binanceData[coin] = {
+        compra: priceBRL,
+        venda: priceBRL,
+      };
+    }
+  }
+  renderTable(binanceData, "binance-body", usdValue, true);
+};
 
-function callStore() {
-    updateStoredValues();
-}
+const renderTable = (data, tableId, usdValue, isBinance = false) => {
+  const tbody = document.getElementById(tableId);
+  tbody.innerHTML = allCoins
+    .map(
+      (coin) => `
+        <tr>
+            <td>${coin}</td>
+            <td>${data[coin]?.compra || "N/A"}</td>
+            <td>${data[coin]?.venda || "N/A"}</td>
+            <td>${
+              isBinance
+                ? data[coin]?.compra
+                : calculoUSD(data[coin]?.compra, usdValue)
+            }</td>
+            <td>${
+              isBinance
+                ? data[coin]?.venda
+                : calculoUSD(data[coin]?.venda, usdValue)
+            }</td>
+        </tr>
+    `
+    )
+    .join("");
+};
 
-updateRealTimeValues();
-setInterval(callStore, 10000);
-setInterval(updateRealTimeValues, 10999);
+// Event Listeners
+coinFilters.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    selectedCoin = btn.dataset.coin;
+    document
+      .querySelectorAll(".coin-filter")
+      .forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
 
+    initChart(selectedCoin);
+    await loadHistoricalData();
+  });
+});
+
+// Inicialização
+document.addEventListener("DOMContentLoaded", async () => {
+  initChart(selectedCoin);
+  const usdValue = await updateUSD();
+  await loadHistoricalData();
+  await updateTables(usdValue);
+
+  setInterval(async () => {
+    const usd = await updateUSD();
+    const data = await fetchJson(apiUrls.mercadoBitcoin[selectedCoin]);
+    if (data?.ticker) updateChart(data.ticker.buy);
+    await updateTables(usd);
+  }, 10000);
+
+  // Atualiza ano do rodapé
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+});
