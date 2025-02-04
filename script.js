@@ -24,7 +24,7 @@ const apiUrls = {
 
 // // Apenas BTC e ETH serão exibidos no gráfico
 // const chartCoins = ['BTC'];
-const allCoins = ["BTC", "ETH", "BCH", "SOL", "ADA", "LTC", "XRP"]; // Moedas para as tabelas
+const allCoins = ["BTC", "ETH", "BCH", "SOL", "LTC", "XRP", "ADA"]; // Moedas para as tabelas
 
 // Configurações globais
 let selectedCoin = "BTC";
@@ -218,32 +218,33 @@ const updateUSD = async () => {
 };
 
 const updateTables = async (usdValue) => {
-  // Mercado Bitcoin
+  // Atualiza dados do Mercado Bitcoin (BRL para USD)
   const mbData = {};
   for (const coin of allCoins) {
     const data = await fetchJson(apiUrls.mercadoBitcoin[coin]);
     if (data?.ticker) {
       mbData[coin] = {
-        compra: formatNumber(data.ticker.buy),
-        venda: formatNumber(data.ticker.sell),
+        compra: Number(data.ticker.buy), // Valor original em BRL
+        venda: Number(data.ticker.sell), // Valor original em BRL
       };
     }
   }
-  renderTable(mbData, "mb-body", usdValue);
+  renderTable(mbData, "mb-body", usdValue, false); // BRL -> USD
 
-  // Binance
+  // Atualiza dados da Binance (USD para BRL, depois BRL para USD)
   const binanceData = {};
   for (const coin of allCoins) {
     const data = await fetchJson(apiUrls.binance[coin]);
     if (data?.price) {
-      const priceBRL = formatNumber(data.price * usdValue);
+      const priceUSD = Number(data.price); // Valor original em USD
+      const priceBRL = priceUSD * usdValue; // Converte USD para BRL
       binanceData[coin] = {
-        compra: priceBRL,
-        venda: priceBRL,
+        compra: priceBRL, // Valor convertido para BRL
+        venda: priceBRL, // Valor convertido para BRL
       };
     }
   }
-  renderTable(binanceData, "binance-body", usdValue, true);
+  renderTable(binanceData, "binance-body", usdValue, false); // BRL -> USD
 };
 
 const renderTable = (data, tableId, usdValue, isBinance = false) => {
@@ -253,16 +254,24 @@ const renderTable = (data, tableId, usdValue, isBinance = false) => {
       (coin) => `
         <tr>
             <td>${coin}</td>
-            <td>${data[coin]?.compra || "N/A"}</td>
-            <td>${data[coin]?.venda || "N/A"}</td>
             <td>${
               isBinance
-                ? data[coin]?.compra
+                ? formatNumber(data[coin]?.priceBRL)
+                : formatNumber(data[coin]?.compra)
+            }</td>
+            <td>${
+              isBinance
+                ? formatNumber(data[coin]?.priceBRL)
+                : formatNumber(data[coin]?.venda)
+            }</td>
+            <td>${
+              isBinance
+                ? formatNumber(data[coin]?.priceUSD)
                 : calculoUSD(data[coin]?.compra, usdValue)
             }</td>
             <td>${
               isBinance
-                ? data[coin]?.venda
+                ? formatNumber(data[coin]?.priceUSD)
                 : calculoUSD(data[coin]?.venda, usdValue)
             }</td>
         </tr>
