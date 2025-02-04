@@ -7,6 +7,7 @@ const apiUrls = {
     ADA: "https://api.binance.com/api/v3/ticker/price?symbol=ADAUSDT",
     LTC: "https://api.binance.com/api/v3/ticker/price?symbol=LTCUSDT",
     XRP: "https://api.binance.com/api/v3/ticker/price?symbol=XRPUSDT",
+    USD_BRL: "https://api.binance.com/api/v3/ticker/price?symbol=USDTBRL"
   },
   mercadoBitcoin: {
     BTC: "https://www.mercadobitcoin.net/api/BTC/ticker",
@@ -208,9 +209,9 @@ const populateChartWithHistoricalData = async () => {
 
 // Atualização de Dados
 const updateUSD = async () => {
-  const usdData = await fetchJson(apiUrls.economia.USD_BRL);
-  if (usdData && usdData[0]) {
-    const usdValue = Number(usdData[0].bid);
+  const usdData = await fetchJson(apiUrls.binance.USD_BRL);
+  if (usdData && usdData.price) {
+    const usdValue = Number(usdData.price);
     document.getElementById("valorUSD").innerHTML = `R$ ${usdValue.toFixed(2)}`;
     return usdValue;
   }
