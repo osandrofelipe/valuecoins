@@ -1,7 +1,7 @@
 # valuecoins
 
 
-É um projeto que fiz para migrar uma planilha que continha dados de APIs de varias exchanges de criptomoedas.
+É um projeto realizado para migrar uma antiga planilha que continha dados de APIs de varias exchanges de criptomoedas.
 
 Utilizei JS e o basico de HTML no periodo da pandemia, pude realizar a pratica de alguns conceitos de consumo de APIs.
 
