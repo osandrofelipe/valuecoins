@@ -1,367 +1,201 @@
+/* ===== VARIÁVEIS E RESET ===== */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #34495e;
+  --accent-color: #27ae60;
+  --text-color: #333;
+  --light-bg: #f4f4f9;
+  --white: #fff;
+  --shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    -webkit-fontso-smoothing: antialiased;
-    background-color: #f4f4f9;
-    color: #333;
-    line-height: 1.6;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--light-bg);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* ===== LAYOUT PRINCIPAL ===== */
 #main-container {
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 1.25rem;
+  display: grid;
+  gap: 1.5rem;
 }
 
+/* ===== HEADER ===== */
 #header {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 #header img {
-    width: 100px;
-    margin-bottom: 10px;
+  width: 80px;
+  height: auto;
+  margin-bottom: 0.5rem;
 }
 
 #header h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
 }
 
 #header p {
-    font-size: 1rem;
-    color: #7f8c8d;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  color: #7f8c8d;
 }
 
+/* ===== TABELAS ===== */
 #tables-container {
-    display: flex;
-    gap: 20px;
-    justify-content: flex-start;
-    /* flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
 }
 
 .table-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    flex: 1 1 calc(50% - 20px);
-    min-width: 555px;
-    max-width: 100%;
-    /* overflow-x: auto; */
+  background: var(--white);
+  border-radius: 0.625rem;
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  overflow: hidden;
 }
 
 .table-card h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #34495e;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 table {
-    width: 50%;
-    border-collapse: collapse;
-    table-layout: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
 }
 
-th,
-td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    white-space: nowrap;
+th, td {
+  padding: 0.75rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: #34495e;
-    color: #fff;
-    padding: 5px 10px;
-    text-align: center;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  font-weight: 500;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
-}
-
+/* ===== SEÇÃO DO DÓLAR (RESTAURADA) ===== */
 #dolar-container {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    justify-content: center;
-    padding: 20px;
-    margin-top: 20px;
-    text-align: center;
+  background: var(--white);
+  border-radius: 0.625rem;
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-top: 1rem;
+  text-align: center;
+  contain: layout;
 }
 
 #dolar-container h2 {
-    font-size: 1.5rem;
-    color: #34495e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    margin-bottom: 15px;
+  font-size: 1.25rem;
+  color: var(--secondary-color);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 #valorUSD {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #27ae60;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
 }
 
-.table-card canvas {
-    max-width: 90%;
-    margin-top: 5px;
-    border-radius: 8px;
-    background: #fff;
-    padding: 5px;
-}
-
-footer {
-    text-align: center;
-    margin-top: 30px;
-    font-size: 0.9rem;
-    color: #7f8c8d;
-}
-
-/* Estilos para os filtros */
+/* ===== FILTROS DE MOEDA ===== */
 #coin-filters {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .coin-filter {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    background: #f0f0f0;
-    cursor: pointer;
-    transition: all 0.3s;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .coin-filter.active {
-    background: #34495e;
-    color: white;
+  background: var(--secondary-color);
+  color: var(--white);
 }
 
-.coin-filter:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* ===== GRÁFICO ===== */
+.table-card canvas {
+  max-width: 100%;
+  min-height: 300px;
+  display: block;
 }
 
-/* =================================================== */
-/* RESPONSIVIDADE (NOVAS REGRAS ADICIONADAS ABAIXO) */
-/* =================================================== */
-
-@media (max-width: 1400px) {
-    table {
-        width: 100%;
-        display: contents;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    #tables-container {
-        flex-wrap: wrap-reverse;
-        display: flex
-    }
-
-    .table-card {
-        flex: 1 1 100%;
-        min-width: unset;
-        justify-items: center;
-    }
-
-    #coin-filters {
-        justify-content: center;
-    }
-
-    .coin-filter {
-        flex: 0 1 calc(13% - 10px);
-        font-size: 0.9rem;
-        text-align: center;
-        display: flex;
-    }
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  margin-top: .2rem;
+  padding: .2rem;
+  font-size: 0.875rem;
+  color: #7f8c8d;
 }
 
-@media (max-width: 1200px) {
-    table {
-        width: 100%;
-        display: contents;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+/* ===== MEDIA QUERIES ===== */
+@media (max-width: 768px) {
+  #main-container {
+    padding: 1rem;
+  }
 
-    #tables-container {
-        flex-wrap: wrap-reverse;
-        display: flex
-    }
+  .table-card {
+    padding: 1rem;
+  }
 
-    .table-card {
-        flex: 1 1 100%;
-        min-width: unset;
-        justify-items: center;
-    }
-
-    #coin-filters {
-        justify-content: center;
-    }
-
-    .coin-filter {
-        flex: 0 1 calc(14% - 10px);
-        font-size: 0.9rem;
-        text-align: center;
-        display: flex;
-    }
+  #dolar-container {
+    margin-top: 0.5rem;
+    padding: 1rem;
+  }
 }
 
-@media (max-width: 780px) {
-    table {
-        width: 100%;
-        display: contents;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+@media (max-width: 480px) {
+  #tables-container {
+    grid-template-columns: 1fr;
+  }
 
-    #coin-filters {
-        justify-content: center;
-        display: flex;
-    }
+  #coin-filters {
+    gap: 0.25rem;
+  }
 
-    .coin-filter {
-        flex: 0 1 calc(14% - 10px);
-        font-size: 0.9rem;
-        text-align: center;
-        display: flex;
-    }
-}
-
-@media (max-width: 600px) {
-    #header h1 {
-        font-size: 2rem;
-    }
-
-    #header p {
-        font-size: 1rem;
-    }
-
-    .table-card {
-        padding: 15px;
-    }
-
-    th,
-    td {
-        padding: 8px;
-        font-size: 0.9em;
-    }
-
-    #dolar-container h2 {
-        font-size: 1.3rem;
-    }
-
-    #valorUSD {
-        font-size: 1.5rem;
-    }
-
-    #coin-filters {
-        justify-content: center;
-    }
-
-    .coin-filter {
-        flex: 0 1 calc(14% - 10px);
-        font-size: 0.7rem;
-        text-align: center;
-        display: flex;
-    }
-}
-
-@media (max-width: 540px) {
-    #header img {
-        width: 80px;
-    }
-
-    #header h1 {
-        font-size: 1.2rem;
-    }
-
-    .table-card h2 {
-        font-size: 1.1rem;
-    }
-
-    th,
-    td {
-        padding: 4px;
-        font-size: 0.70em;
-    }
-
-    #coin-filters {
-        justify-content: center;
-        /* display: flex; */
-    }
-
-    .coin-filter {
-        flex: 0 1 calc(13% - 10px);
-        padding: 8px 10px;
-        font-size: 0.7rem;
-        text-align: center;
-        display: flex;
-    }
-}
-
-@media (max-width: 430px) {
-    #header img {
-        width: 50px;
-    }
-
-    #header h1 {
-        font-size: 1rem;
-
-    }
-
-    .table-card {
-        padding: 10px;
-        justify-content: center;
-    }
-
-    .table-card h2 {
-        font-size: 1rem;
-    }
-
-    th,
-    td {
-        padding: 4px;
-        font-size: 0.75rem;
-    }
-
-    #dolar-container h2 {
-        font-size: 1rem;
-    }
-
-    #valorUSD {
-        font-size: 1rem;
-    }
-
-    #coin-filters {
-        justify-content: center;
-    }
-
-    .coin-filter {
-        flex: 0 1 calc(2% - 10px);
-        padding: 7px 10px;
-        font-size: 0.7rem;
-        text-align: center;
-        display: flex;
-    }
+  .coin-filter {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
 }
